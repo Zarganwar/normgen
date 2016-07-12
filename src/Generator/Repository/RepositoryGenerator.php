@@ -40,6 +40,15 @@ class RepositoryGenerator extends AbstractGenerator
             if (($extends = $this->config->get('repository.extends')) !== NULL) {
                 $namespace->addUse($extends);
                 $class->setExtends($extends);
+                
+                $name = $class->getName();
+                $class
+                    ->addMethod("getEntityClassNames")
+                    ->setStatic(true)
+                    ->setVisibility('public')
+                    ->addDocument("@return array")
+                    ->addBody("return [$name::class];")
+                ;
             }
 
             // Save file
